@@ -4,23 +4,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Vamshi502/sample-maven-project.git'
+                git branch: 'main', url: 'https://github.com/Vamshi502/sample-maven-project.git'
             }
         }
-        stage('Validate') {
+        stage('Build') {
             steps {
-                sh 'mvn validate'
+                sh 'mvn clean install'
             }
         }
-        stage('Compile') {
-            steps {
-                sh 'mvn compile'
-            }
+        // Add more stages as needed (test, package, deploy, etc.)
+    }
+    post {
+        success {
+            echo 'Build succeeded!'
         }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
+        failure {
+            echo 'Build failed.'
+        }
+    }
+}
+
         }
         stage('Package') {
             steps {
